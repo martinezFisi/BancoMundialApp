@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="pe.edu.sistemas.bancomundialapp.TableActivity">
+<LinearLayout
+    android:padding="16dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+    <TextView
+        android:layout_width="50dp"
+        android:textSize="20dp"
+        android:layout_height="25dp"
+        android:text="Pais"
+        android:id="@+id/textView"
+        android:layout_marginRight="10dp"
+        android:layout_marginLeft="10dp"
+        />
+
+    <Spinner
+        android:layout_width="150dp"
+        android:layout_height="25dp"
+        android:textSize="20dp"
+        android:id="@+id/sp_paises" />
+ </LinearLayout>
+
+    <LinearLayout
+        android:padding="16dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="50dp"
+            android:textSize="20dp"
+            android:layout_height="25dp"
+            android:textAlignment="center"
+            android:text="Indicador"
+            android:id="@+id/textIndicador"
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="10dp"
+            />
+
+        <Spinner
+            android:layout_width="438dp"
+            android:layout_height="25dp"
+            android:textSize="20dp"
+            android:id="@+id/sp_indicadores" />
+    </LinearLayout>
+    <LinearLayout
+        android:padding="16dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal">
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="Consultar"/>
+    </LinearLayout>
+</LinearLayout>
