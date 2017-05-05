@@ -1,6 +1,7 @@
 package pe.edu.sistemas.bancomundialapp;
 
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -29,10 +30,11 @@ public class TableActivity extends AppCompatActivity {
     String[]anios={"2005","2006","2007","2008","2009","2010","2011","2012","2013","2014","2015"};//para probar
     int pais;
     int indicador;
-    int[]valores={1,2,4,2,6,2,6,7,7,3,8};//para probar
+    int[]valores={1,2,4,2,6,2,6,7,7,3,80};//para probar
     TableRow fila; // para almacenar los TextViews
     TableLayout lista; // para almacenar los Tablerow;
     ArrayList<Resultado> result=new ArrayList<Resultado>();//para probar
+    Drawable d,d1; // para darle borde a los TextView del TableRow
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,6 +58,18 @@ public class TableActivity extends AppCompatActivity {
         sp_indicadores.setAdapter(adaptador);
     }
 
+
+    public void CargarTableRow(TextView v,Drawable d)
+    {
+        v.setGravity(Gravity.CENTER_VERTICAL);
+        v.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+        v.setPadding(15, 15, 15, 15);
+        v.setWidth(90);
+        v.setHeight(45);
+        v.setBackground(d);
+        v.setTextColor(Color.WHITE);
+        fila.addView(v);
+    }
     public void CargarTable()
     {
 
@@ -78,27 +92,31 @@ public class TableActivity extends AppCompatActivity {
                 lista.removeAllViews();// para borrar los datos de la tabla y mostrar los datos de la nueva consulta
                 TextView Taño;
                 TextView Tvalor;
+                TextView cabezera1;
+                TextView cabezera2;
+                d= getResources().getDrawable(R.drawable.bordertabla);
+                d1=getResources().getDrawable(R.drawable.mybordertabla2);
+                cabezera1=new TextView(getBaseContext());
+                fila=new TableRow(getBaseContext());
+                cabezera1.setText("Año");
+                CargarTableRow(cabezera1,d1);
+                cabezera2=new TextView(getBaseContext());
+                cabezera2.setText("Valor");
+                CargarTableRow(cabezera2,d1);
+                lista.addView(fila);
+
                 for(int j=0;j<11;j++)
                 {
-                    fila = new TableRow(getBaseContext());
+                        fila = new TableRow(getBaseContext());
                         Taño = new TextView(getBaseContext());
-                        Taño.setGravity(Gravity.CENTER_VERTICAL);
-                        Taño.setPadding(15, 15, 15, 15);
-                        Taño.setBackgroundResource(R.color.colorPrimary);
                         Taño.setText(result.get(j).getAño());
-                        Taño.setTextColor(Color.WHITE);
-                        fila.addView(Taño);
+                        CargarTableRow(Taño,d);
                         Tvalor = new TextView(getBaseContext());
-                        Tvalor.setGravity(Gravity.CENTER_VERTICAL);
-                        Tvalor.setPadding(15, 15, 15, 15);
-                        Tvalor.setBackgroundResource(R.color.colorPrimary);
                         Tvalor.setText(String.valueOf(result.get(j).getValor()));
-                        Tvalor.setTextColor(Color.WHITE);
-                        fila.addView(Tvalor);
-                    lista.addView(fila);
+                        CargarTableRow(Tvalor,d);
+                        lista.addView(fila);
                 }
             }
           });
-
     }
 }
