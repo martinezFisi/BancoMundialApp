@@ -20,7 +20,7 @@ public class MainActivity extends AppCompatActivity
     public void Llamar(View view)
     {
         //Intent i =new Intent(this,TableActivity.class);
-        Intent i =new Intent(this,TestActivity.class);
+        Intent i =new Intent(this,TableActivity.class);
         startActivity(i);
     }
 }

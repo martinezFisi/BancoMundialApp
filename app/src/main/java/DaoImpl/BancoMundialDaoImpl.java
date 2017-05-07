@@ -31,7 +31,7 @@ public class BancoMundialDaoImpl implements BancoMundialDao {
         try{
             String campos[] = new String[]{"anio","valor"};
             String selection = "codigoPais = ? and codigoIndicador = ?";
-            String selectionArgs[] = new String[]{"ARG","SH.DYN.AIDS"};
+            String selectionArgs[] = new String[]{codPais,codIndicador};
             Cursor c = db.query( "tp_bancoMundial", campos, selection, selectionArgs, null, null, null );
 
             Log.i("BD", "Se ejecutó el select: "+c.getCount());

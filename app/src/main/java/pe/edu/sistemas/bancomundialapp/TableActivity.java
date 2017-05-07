@@ -1,9 +1,11 @@
 package pe.edu.sistemas.bancomundialapp;
 
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -14,19 +16,24 @@ import android.widget.TableRow;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.List;
 
+import Dao.BancoMundialDao;
 import Dao.Resultado;
+import DaoImpl.BancoMundialDaoImpl;
+import dto.Registro;
+import sql.BancoMundialSQLiteHelper;
 
 public class TableActivity extends AppCompatActivity {
     Spinner sp_paises;
     Spinner sp_indicadores;
     Button consultar;
     String[] paises={"Argentina","Bolivia","Brasil","Chile","Colombia","Ecuador","Paraguay","Peru","Uruaguay","Venezuela"};
-    String[] codigo_paises={"Arg","Bol","Bra","Chi","Col","Ecu","Par","Per","Uru","Ven"};
+    String[] codigo_paises={"ARG","BOL","BRA","CHL","COL","ECU","PRY","PER","URY","VEN"};
     String[] indicadores={"Personas Mayores de 15 años,viviendo con VIH","Edad Promedio de hombres,en su primer matrimonio",
     "Edad promedio de mujeres, en su primer matrimonio","Prevalencia de diabetes(%poblacion entre 25 y 79 años)","Camas en hospital (por cada 1000 personas)",
     "Incidencia de TBC(por cada 1000 personas)","Expetativa de vida al nacer(en años)","Doctores(por cada 1000 personas)"};
-    String[]codigo_indicadores={"SH.DYN.AIDS","SP.DYN.SMAM.MA","SP.DYN.SMAM.FE","SH.STA.DIAB.ZS","SH.MED.BEDS.ZS","SH.TBS.INCD","SP.DYN.LEOO.IN","SH.MED.CMHW.P3"};
+    String[]codigo_indicadores={"SH.DYN.AIDS","SP.DYN.SMAM.MA","SP.DYN.SMAM.FE","SH.STA.DIAB.ZS","SH.MED.BEDS.ZS","SH.TBS.INCD","SP.DYN.LE00.IN","SH.MED.CMHW.P3"};
     String[]anios={"2005","2006","2007","2008","2009","2010","2011","2012","2013","2014","2015"};//para probar
     int pais;
     int indicador;
@@ -36,12 +43,21 @@ public class TableActivity extends AppCompatActivity {
     ArrayList<Resultado> result=new ArrayList<Resultado>();//para probar
     Drawable d,d1; // para darle borde a los TextView del TableRow
 
+    //SQLite
+    private BancoMundialSQLiteHelper bancoMundialDb;
+    private SQLiteDatabase db;
+    private String message;
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_table);
         sp_paises=(Spinner) findViewById(R.id.sp_paises);
         sp_indicadores=(Spinner)findViewById(R.id.sp_indicadores);
         consultar=(Button)findViewById(R.id.btnConsultar);
+
+        //SQLite
+        bancoMundialDb = new BancoMundialSQLiteHelper(getApplicationContext());
+
         CargarPaises();
         CargarIndicadores();
         CargarTable();
@@ -72,22 +88,17 @@ public class TableActivity extends AppCompatActivity {
     }
     public void CargarTable()
     {
-
-            for (int j = 0; j < 11; j++) { // este for solo para q me llene el arraylist de resultados
-                Resultado r = new Resultado();
-                r.setAño(anios[j]);
-                r.setValor(valores[j]);
-                result.add(r);
-            }
-
-
           consultar.setOnClickListener(new View.OnClickListener()
           {
             @Override
             public void onClick(View v)
             {
                 pais=sp_paises.getSelectedItemPosition();//obtengo el indice para relacionarlo con su codigo en el array codigo_paises
+                Log.i("Tabla", "Item paises: "+pais);
+                Log.i("Tabla", "Pais "+codigo_paises[pais]);
                 indicador=sp_indicadores.getSelectedItemPosition();//obtengo el indice para relacionarlo con su codigo en el array codigo indicador
+                Log.i("Tabla", "Item de indicadores: "+indicador);
+                Log.i("Tabla", "Indicador: "+codigo_indicadores[indicador]);
                 lista=(TableLayout)findViewById(R.id.tablaConsultas);
                 lista.removeAllViews();// para borrar los datos de la tabla y mostrar los datos de la nueva consulta
                 TextView Taño;
@@ -105,14 +116,20 @@ public class TableActivity extends AppCompatActivity {
                 CargarTableRow(cabezera2,d1);
                 lista.addView(fila);
 
-                for(int j=0;j<11;j++)
+                //Modo lectura de la bd
+                db = bancoMundialDb.getReadableDatabase();
+                //Consulta a la bd
+                BancoMundialDao bancoMundialDao = new BancoMundialDaoImpl();
+                List<Registro> list = bancoMundialDao.bancoMundialQRY(db, codigo_paises[pais], codigo_indicadores[indicador]);
+
+                for(int j=0;j<list.size();j++)
                 {
                         fila = new TableRow(getBaseContext());
                         Taño = new TextView(getBaseContext());
-                        Taño.setText(result.get(j).getAño());
+                        Taño.setText(list.get(j).getAnio());
                         CargarTableRow(Taño,d);
                         Tvalor = new TextView(getBaseContext());
-                        Tvalor.setText(String.valueOf(result.get(j).getValor()));
+                        Tvalor.setText(String.valueOf(list.get(j).getValor()));
                         CargarTableRow(Tvalor,d);
                         lista.addView(fila);
                 }
