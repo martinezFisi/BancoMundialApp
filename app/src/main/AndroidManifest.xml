@@ -15,9 +15,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".TableActivity"
-         android:screenOrientation="landscape"   ></activity>
-
+        <activity
+            android:name=".TableActivity"
+            android:screenOrientation="landscape" />
+        <activity android:name=".TestActivity"></activity>
     </application>
 
 </manifest>
