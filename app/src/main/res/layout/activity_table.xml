@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="#E9ECF1"
     tools:context="pe.edu.sistemas.bancomundialapp.TableActivity">
 
     <ScrollView
@@ -24,20 +25,17 @@
         android:layout_width="50dp"
         android:textSize="20dp"
         android:layout_height="25dp"
-        android:text="Pais"
-
+        android:text="País"
         android:id="@+id/textView"
         android:layout_marginRight="10dp"
         android:layout_marginLeft="10dp"
         />
 
     <Spinner
-        android:background="@drawable/myborder"
         android:layout_width="150dp"
         android:layout_height="25dp"
         android:textSize="20dp"
         android:textAlignment="center"
-        android:textColor="#e0f7fa"
         android:id="@+id/sp_paises" />
  </LinearLayout>
 
@@ -58,7 +56,6 @@
             />
 
             <Spinner
-                 android:background="@drawable/myborder"
                  android:layout_width="438dp"
                  android:layout_height="25dp"
                  android:textSize="20dp"
@@ -72,24 +69,51 @@
                 android:gravity="center"
                 android:orientation="horizontal">
                 <Button
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_width="200dp"
+                android:layout_height="60dp"
+                    android:textSize="20dp"
                 android:id="@+id/btnConsultar"
-
-                android:text="Consultar"/>
+                    android:drawableRight="@drawable/magnify"
+                android:allowUndo="true"
+                android:text="Consultar"
+                    android:paddingLeft="20dp"/>
             </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:orientation="horizontal">
-            <TableLayout
-                android:id="@+id/tablaConsultas"
-                android:layout_width="400dp"
-                android:layout_marginLeft="20dp"
-                android:layout_height="match_parent">
-            </TableLayout>
-        </LinearLayout>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:gravity="center_horizontal"
+                >
+                
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="20dp"
+                    android:id="@+id/tituloTablaTextView"
+                    android:textSize="20dp"
+                    android:gravity="center_horizontal"
+                    />
+
+                <TableLayout
+                    android:id="@+id/tablaConsultas"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent">
+                </TableLayout>
+
+                <com.github.mikephil.charting.charts.PieChart
+                    android:id="@+id/pieChart"
+                    android:layout_width="match_parent"
+                    android:layout_height="300dp"
+                    android:layout_margin="10dp"/>
+
+                <com.github.mikephil.charting.charts.BarChart
+                    android:id="@+id/barChart"
+                    android:layout_width="350dp"
+                    android:layout_height="300dp"
+                    android:gravity="center_horizontal"/>
+
+            </LinearLayout>
 
         </LinearLayout>
     </ScrollView>

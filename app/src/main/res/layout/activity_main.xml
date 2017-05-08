@@ -13,14 +13,18 @@
     tools:context="pe.edu.sistemas.bancomundialapp.MainActivity">
 
     <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="200dp"
+        android:layout_height="50dp"
         android:alpha="0.9"
-        android:text="Entrar"
-        android:background="#006064"
+        android:text="Ingresar"
+        android:textSize="25dp"
+        android:background="@color/colorPrimaryDark"
         android:textColor="#e0f7fa"
         android:id="@+id/button"
         android:onClick="Llamar"
+        android:allowUndo="true"
+        android:drawableRight="@drawable/login"
+        android:paddingRight="10dp"
         android:layout_marginBottom="51dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true" />

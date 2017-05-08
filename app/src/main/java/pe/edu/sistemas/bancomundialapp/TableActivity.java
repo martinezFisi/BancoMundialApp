@@ -15,6 +15,12 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
+import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.PieData;
+import com.github.mikephil.charting.data.PieDataSet;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,10 +49,17 @@ public class TableActivity extends AppCompatActivity {
     ArrayList<Resultado> result=new ArrayList<Resultado>();//para probar
     Drawable d,d1; // para darle borde a los TextView del TableRow
 
+    TextView tituloTablaTextView;
+
     //SQLite
     private BancoMundialSQLiteHelper bancoMundialDb;
     private SQLiteDatabase db;
     private String message;
+
+    //PieChart
+    private PieChart pieChart;
+    private BarChart barChart;
+
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,6 +67,11 @@ public class TableActivity extends AppCompatActivity {
         sp_paises=(Spinner) findViewById(R.id.sp_paises);
         sp_indicadores=(Spinner)findViewById(R.id.sp_indicadores);
         consultar=(Button)findViewById(R.id.btnConsultar);
+        tituloTablaTextView = (TextView) findViewById(R.id.tituloTablaTextView);
+
+        //PíeChart
+        pieChart = (PieChart) findViewById(R.id.pieChart);
+        barChart = (BarChart) findViewById(R.id.barChart);
 
         //SQLite
         bancoMundialDb = new BancoMundialSQLiteHelper(getApplicationContext());
@@ -80,8 +98,8 @@ public class TableActivity extends AppCompatActivity {
         v.setGravity(Gravity.CENTER_VERTICAL);
         v.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
         v.setPadding(15, 15, 15, 15);
-        v.setWidth(90);
-        v.setHeight(45);
+        v.setWidth(350);
+        v.setHeight(80);
         v.setBackground(d);
         v.setTextColor(Color.WHITE);
         fila.addView(v);
@@ -93,10 +111,12 @@ public class TableActivity extends AppCompatActivity {
             @Override
             public void onClick(View v)
             {
+
                 pais=sp_paises.getSelectedItemPosition();//obtengo el indice para relacionarlo con su codigo en el array codigo_paises
                 Log.i("Tabla", "Item paises: "+pais);
                 Log.i("Tabla", "Pais "+codigo_paises[pais]);
                 indicador=sp_indicadores.getSelectedItemPosition();//obtengo el indice para relacionarlo con su codigo en el array codigo indicador
+                tituloTablaTextView.setText(indicadores[indicador]);
                 Log.i("Tabla", "Item de indicadores: "+indicador);
                 Log.i("Tabla", "Indicador: "+codigo_indicadores[indicador]);
                 lista=(TableLayout)findViewById(R.id.tablaConsultas);
@@ -112,7 +132,7 @@ public class TableActivity extends AppCompatActivity {
                 cabezera1.setText("Año");
                 CargarTableRow(cabezera1,d1);
                 cabezera2=new TextView(getBaseContext());
-                cabezera2.setText("Valor");
+                cabezera2.setText("N° de personas");
                 CargarTableRow(cabezera2,d1);
                 lista.addView(fila);
 
@@ -133,7 +153,66 @@ public class TableActivity extends AppCompatActivity {
                         CargarTableRow(Tvalor,d);
                         lista.addView(fila);
                 }
+
+                dibujarPie(list);
             }
           });
     }
+
+    public void dibujarPie(List<Registro> list){
+
+        /*definimos algunos atributos*/
+        pieChart.setHoleRadius(40f);
+        pieChart.setDrawYValues(true);
+        pieChart.setDrawXValues(true);
+        pieChart.setRotationEnabled(true);
+        pieChart.animateXY(1500, 1500);
+
+        /*creamos una lista para los valores X*/
+        ArrayList<String> valsX = new ArrayList<String>();
+        /*creamos una lista para los valores Y*/
+        ArrayList<Entry> valsY = new ArrayList<Entry>();
+
+        for (int i = 0; i < list.size(); i++) {
+            if(list.get(i).getValor() > 0){
+                valsX.add(list.get(i).getAnio());
+                valsY.add(new Entry(list.get(i).getValor(),0));
+            }
+        }
+
+ 		/*creamos una lista de colores*/
+        ArrayList<Integer> colors = new ArrayList<Integer>();
+        colors.add(getResources().getColor(R.color.red_flat));
+        colors.add(getResources().getColor(R.color.amber_flat));
+        colors.add(getResources().getColor(R.color.bluegray_flat));
+        colors.add(getResources().getColor(R.color.deeporange_flat));
+        colors.add(getResources().getColor(R.color.green_flat));
+        colors.add(getResources().getColor(R.color.pink_flat));
+        colors.add(getResources().getColor(R.color.purple_flat));
+        colors.add(getResources().getColor(R.color.teal_flat));
+        colors.add(getResources().getColor(R.color.indigo_flat));
+        colors.add(getResources().getColor(R.color.amber_flat));
+
+ 		/*seteamos los valores de Y y los colores*/
+        PieDataSet set1 = new PieDataSet(valsY, "Resultados");
+        set1.setSliceSpace(3f);
+        set1.setColors(colors);
+
+		/*seteamos los valores de X*/
+        PieData data = new PieData(valsX, set1);
+        pieChart.setData(data);
+        pieChart.highlightValues(null);
+        pieChart.invalidate();
+
+        /*Ocutar descripcion*/
+        pieChart.setDescription("");
+        /*Ocultar leyenda*/
+        pieChart.setDrawLegend(true);
+    }
+
+    public void dibujarBar(List<Registro> list){
+
+
+    }
+
 }

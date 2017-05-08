@@ -16,8 +16,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".TableActivity"
-            android:screenOrientation="landscape" />
+            android:name=".TableActivity"/>
         <activity android:name=".TestActivity"></activity>
     </application>
 
